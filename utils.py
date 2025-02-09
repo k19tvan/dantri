@@ -111,7 +111,13 @@ async def process_url(client, url):
         if container:
             title = container.find(class_='title-page detail')
             content = container.get_text(separator='\n', strip=True).replace("\n", "\\n")
-            return PAGE(url, title.text, content, "")
+            metadata = {
+                'images': [img['src'] for img in container.find_all('img') if img.get('src')],
+                'audios': [audio['src'] for audio in container.find_all('audio') if audio.get('src')],
+                'videos': [video['src'] for video in container.find_all('video') if video.get('src')],
+                'links': [a['href'] for a in container.find_all('a') if a.get('href')]
+            }
+            return PAGE(url, title.text, content, metadata)
     
     return PAGE("", "", "", "")
 
