@@ -4,6 +4,8 @@ import asyncio
 import aiohttp
 import random
 import httpx
+import json
+from pathlib import Path
 
 async def async_aiohttp_get_all(urls):
     async with aiohttp.ClientSession() as session:
@@ -74,6 +76,9 @@ def get_date_from_link(url):
     split = soup['datetime'].split()[0].split('-')
     return (split[1], split[2])
 
+def file_counts(path):
+    return sum(1 for file in path.iterdir())
+
 class PAGE:
     def __init__(self, url, title, content, metadata):
         self.url = url
@@ -86,7 +91,19 @@ class PAGE:
         print(f"Title: {self.title}")
         print(f"Content: {self.content}")
         print(f"Metadata: {self.metadata}")
-    
+        
+    def save(self, path):
+        ans = {}
+        ans['url'] = self.url
+        ans['title'] = self.title
+        ans['content'] = self.content
+        ans['metadata'] = self.metadata
+        
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(ans, f, indent=4, ensure_ascii=False)
+
+        
+
 MAX_CONCURRENT_REQUEST = 3
 semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUEST)
 
@@ -111,12 +128,26 @@ async def process_url(client, url):
         if container:
             title = container.find(class_='title-page detail')
             content = container.get_text(separator='\n', strip=True).replace("\n", "\\n")
-            metadata = {
-                'images': [img['src'] for img in container.find_all('img') if img.get('src')],
-                'audios': [audio['src'] for audio in container.find_all('audio') if audio.get('src')],
-                'videos': [video['src'] for video in container.find_all('video') if video.get('src')],
-                'links': [a['href'] for a in container.find_all('a') if a.get('href')]
-            }
+            
+            metadataraws = []
+            for figure in soup.find_all("figure", class_="image align-center"):
+                for elem in figure.find_all(["img", "figcaption"]):
+                    if elem.name == "img":
+                        src = elem.get("data-src") or elem.get("data-original") or elem.get("src")
+                        if src and src.startswith("http"):
+                            metadataraws.append(src)
+                    elif elem.name == "figcaption":
+                        metadataraws.append(elem.get_text(strip=True))
+            
+            
+            metadata = []
+            cur = []
+            for metadataraw in metadataraws:
+                cur.append(metadataraw)
+                if not ("http" in metadataraw):
+                    metadata.append(cur)
+                    cur = [] 
+                
             return PAGE(url, title.text, content, metadata)
     
     return PAGE("", "", "", "")

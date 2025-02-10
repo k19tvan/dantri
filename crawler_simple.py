@@ -1,9 +1,8 @@
 import asyncio
 import json
 import os
-import random
-import httpx
 from utils import *
+from pathlib import Path
 
 main_url = "https://dantri.com.vn/giao-duc/from/2024-{0}-{1}/to/2024-{2}-{3}/trang-{4}.htm"
 
@@ -60,9 +59,17 @@ async def main():
             json.dump(links, f, indent=4)
 
     print("Number of links crawled:", len(links))
-    pages = await process_urls(links[0:20])
-    for page in pages:
-        print("-"*30)
-        page.show()
+    
+    N_links = 2
+    print(f"Number of links used: {N_links}")
+    pages = await process_urls(links[0:N_links])
+
+    saved_path = Path("output")
+    saved_path.mkdir(parents=True, exist_ok=True)
+    
+    cur_saved_path = saved_path/Path("run" + str(file_counts(saved_path) + 1))
+    cur_saved_path.mkdir(parents=True, exist_ok=True)
+    
+    for i, page in enumerate(pages): page.save(cur_saved_path/Path(str(i)+".json"))
 
 asyncio.run(main())
