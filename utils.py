@@ -5,16 +5,6 @@ import aiohttp
 import random
 import httpx
 import json
-from pathlib import Path
-
-async def async_aiohttp_get_all(urls):
-    async with aiohttp.ClientSession() as session:
-        async def fetch(url):
-            async with session.get(url) as response:
-                return await response.text()
-        return await asyncio.gather(*[
-            fetch(url) for url in urls
-        ])
 
 headers = {
     'Host':'dantri.com.vn',
@@ -34,50 +24,126 @@ headers = {
     'Accept-Language':'en-US,en;q=0.9',
 }
 
+MAX_CONCURRENT_REQUEST = 10
+semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUEST)
+
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
+]
+
+def get_categories(base_url):
+    
+    html = requests.get(base_url, headers=headers)
+    soup = BeautifulSoup(html.content, 'html.parser').find(class_ = "menu-wrap bg-wrap")
+    
+    list_categories = {}
+    
+    parent_categories = soup.find_all("li", class_="has-child")
+    for parent_category in parent_categories:
+        lst_category = []
+        child_categories = parent_category.find("ol", class_="submenu").find_all("li")
+        
+        for child_category in child_categories:
+            tag_a = child_category.find("a")
+            lst_category.append((tag_a.text, tag_a["href"]))
+            
+        list_categories[parent_category.find('a').text] = lst_category
+     
+    return list_categories
+
+async def fetch_url(client, url): 
+    """ Return html of a url"""
+    
+    headers['User-Agent'] = random.choice(USER_AGENTS)
+    async with semaphore:
+        await asyncio.sleep(random.uniform(2, 5))
+        response = await client.get(url, headers=headers, timeout=10)
+        return await response.text()
+    
 def count_page(url):
     l = 1; r = 30
     ans = None
 
     while l <= r:
         mid = (l + r) >> 1
-        if check_page_valid(url, mid): l = mid + 1; ans = mid
+        soup = BeautifulSoup(requests.get(url.format(mid), headers=headers).content,  'html.parser').find(id = "bai-viet")
+        ats = soup.find_all(class_='article-thumb')
+        if len(ats) != 0: l = mid + 1; ans = mid
         else: r = mid - 1
 
     return ans
 
-def check_page_valid(url, num):
-    soup = BeautifulSoup(requests.get(url.format(num), headers=headers, verify=False).content,  'html.parser').find(id = "bai-viet")
-    ats = soup.find_all(class_='article-thumb')
-
-    return len(ats) != 0
-
-
-def get_urls(url):
-    html = requests.get(url, headers=headers, verify=False)
-    soup = BeautifulSoup(html.content, 'html.parser').find(id = "bai-viet")
-    ats = soup.find_all(class_='article-thumb')
-
-    return [at.find('a', href=True)['href'] for at in ats]
+def get_urls_from_url(url):
+    try:
+        html = requests.get(url, headers=headers)
+        soup = BeautifulSoup(html.content, 'html.parser').find(id = "bai-viet")
+        ats = soup.find_all(class_='article-thumb')
+        return [at.find('a', href=True)['href'] for at in ats]
+    except: 
+        return []
 
 def get_urls_from_html(html):
     try:
         soup = BeautifulSoup(html, 'html.parser').find(id = "bai-viet")
-        if soup == None: print(html)
         ats = soup.find_all(class_='article-thumb')
+        return [at.find('a', href=True)['href'] for at in ats]
     except:
-        f = open("fu.html", "a")
-        f.write(html)
-        f.close()
-        return None
-    return [at.find('a', href=True)['href'] for at in ats]
+        return []
 
-def get_date_from_link(url):
-    soup = BeautifulSoup(requests.get(url, headers=headers, verify=False).content, 'html.parser').find(class_ = 'author-time')
-    split = soup['datetime'].split()[0].split('-')
-    return (split[1], split[2])
+def get_dates(url, main_url):
+    """ Return month/date/number_of_pages"""
+    """ Url: main_url + Page 30"""
 
-def file_counts(path):
-    return sum(1 for file in path.iterdir())
+    try:
+        dates = []; ed = ("12", "31")
+        
+        while True: 
+            
+            dates.append((ed[0], ed[1], 30))
+            
+            links = get_urls_from_url(url.format("01", "01", ed[0], ed[1]))
+            if len(links) == 0: break
+            
+            last_link = links[-1]
+            soup = BeautifulSoup(requests.get(last_link, headers=headers).content, 'html.parser').find(class_='author-time')
+            fr = soup['datetime'].split()[0].split('-')
+            
+            ed = ((fr[1], fr[2]))
+
+        dates[-1] =  (dates[-1][0], dates[-1][1], count_page(main_url.format("01", "01",  dates[-1][0],  dates[-1][1], "{0}")))
+        dates.append(('01', '01', -1))
+
+        return dates 
+    except: 
+        return []
+
+async def get_link_page_in_all_timelines(dates, main_url):
+    
+    try:
+
+        pages = [] # Example: https://dantri.com.vn/xa-hoi/chinh-tri/from/2025-02-05/to/2025-02-05.htm
+        for i in range(len(dates) - 2, -1, -1):
+            for j in range(1, dates[i][2] + 1):
+                pages.append(main_url.format(dates[i + 1][0], dates[i + 1][1], dates[i][0], dates[i][1], j))
+
+        
+        async with aiohttp.ClientSession() as client:
+            responses = await asyncio.gather(*(fetch_url(client, page) for page in pages))
+
+        links = [] # Exmaple: https://dantri.com.vn/xa-hoi/chinh-phu-se-co-co-che-de-chon-can-bo-tot-liem-chinh-khong-vu-loi-20250205214525923.htm
+        for res in responses:
+            if res:
+                for link in get_urls_from_html(res):
+                    links.append(link)
+
+        links = list(set(links))
+        return links
+    
+    except:
+        print("Have not processed this page type !")
+        return []
 
 class PAGE:
     def __init__(self, url, title, content, metadata):
@@ -102,18 +168,9 @@ class PAGE:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(ans, f, indent=4, ensure_ascii=False)
 
-        
-
-MAX_CONCURRENT_REQUEST = 3
-semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUEST)
-
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
-]
-
-async def fetch_url(client, url):
+async def fetch_url_2(client, url): 
+    """ Return html of a url"""
+    
     headers['User-Agent'] = random.choice(USER_AGENTS)
     async with semaphore:
         await asyncio.sleep(random.uniform(2, 5))
@@ -121,7 +178,7 @@ async def fetch_url(client, url):
         return response.text
     
 async def process_url(client, url):
-    html_response = await fetch_url(client, url)
+    html_response = await fetch_url_2(client, url)
     if html_response:
         soup = BeautifulSoup(html_response, "html.parser")
         container = soup.find(class_="singular-container")
@@ -152,10 +209,22 @@ async def process_url(client, url):
     
     return PAGE("", "", "", "")
 
-async def process_urls(urls):
+async def process_urls(urls, batch_size = 10):
+    results = []
     async with httpx.AsyncClient() as client:
-        tasks = [process_url(client, url) for url in urls]
-        return await asyncio.gather(*tasks)
-
-
+        n = len(urls)
     
+        for st in range(0, n, batch_size):
+            batch = urls[st: st + batch_size]
+            print(f"Processing Batch {st // batch_size + 1}/{(n + batch_size - 1) // batch_size}")    
+            tasks = [process_url(client, url) for url in batch]
+            batch_results = await asyncio.gather(*tasks)
+            
+            results.extend(batch_results)
+            await asyncio.sleep(2)
+        
+    return results
+
+
+def file_counts(path):
+    return sum(1 for file in path.iterdir())
