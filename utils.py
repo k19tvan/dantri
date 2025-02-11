@@ -36,20 +36,21 @@ USER_AGENTS = [
 def get_categories(base_url):
     
     html = requests.get(base_url, headers=headers)
-    soup = BeautifulSoup(html.content, 'html.parser').find(class_ = "menu-wrap bg-wrap")
+    soup = BeautifulSoup(html.content, 'html.parser').find(class_ = "nav-full bg-wrap")
     
     list_categories = {}
     
-    parent_categories = soup.find_all("li", class_="has-child")
+    parent_categories_names = soup.find_all("a", class_="dt-text-MineShaft")
+    parent_categories = [category.parent for category in parent_categories_names]
     for parent_category in parent_categories:
         lst_category = []
-        child_categories = parent_category.find("ol", class_="submenu").find_all("li")
+        child_categories = parent_category.find("ol", class_="nf-submenu").find_all("li")
         
         for child_category in child_categories:
             tag_a = child_category.find("a")
             lst_category.append((tag_a.text, tag_a["href"]))
             
-        list_categories[parent_category.find('a').text] = lst_category
+        list_categories[parent_category.find('a')['href'].split('/')[-1].replace('.htm', '')] = lst_category
      
     return list_categories
 
@@ -69,6 +70,7 @@ def count_page(url):
     while l <= r:
         mid = (l + r) >> 1
         soup = BeautifulSoup(requests.get(url.format(mid), headers=headers).content,  'html.parser').find(id = "bai-viet")
+        print(url.format(mid))
         ats = soup.find_all(class_='article-thumb')
         if len(ats) != 0: l = mid + 1; ans = mid
         else: r = mid - 1
@@ -96,28 +98,30 @@ def get_dates(url, main_url):
     """ Return month/date/number_of_pages"""
     """ Url: main_url + Page 30"""
 
-    try:
-        dates = []; ed = ("12", "31")
-        
-        while True: 
-            
-            dates.append((ed[0], ed[1], 30))
-            
-            links = get_urls_from_url(url.format("01", "01", ed[0], ed[1]))
-            if len(links) == 0: break
-            
-            last_link = links[-1]
-            soup = BeautifulSoup(requests.get(last_link, headers=headers).content, 'html.parser').find(class_='author-time')
-            fr = soup['datetime'].split()[0].split('-')
-            
-            ed = ((fr[1], fr[2]))
+    # try:
+    dates = []; ed = ("12", "31")
 
-        dates[-1] =  (dates[-1][0], dates[-1][1], count_page(main_url.format("01", "01",  dates[-1][0],  dates[-1][1], "{0}")))
-        dates.append(('01', '01', -1))
+    while True:
 
-        return dates 
-    except: 
-        return []
+        dates.append((ed[0], ed[1], 30))
+
+        links = get_urls_from_url(url.format("01", "01", ed[0], ed[1]))
+        if len(links) == 0: break
+
+        last_link = links[-1]
+        print(last_link)
+        soup = BeautifulSoup(requests.get(last_link, headers=headers).content, 'html.parser').find('time')
+        fr = soup['datetime'].split()[0].split('-')
+
+        ed = ((fr[1], fr[2]))
+
+    dates[-1] =  (dates[-1][0], dates[-1][1], count_page(main_url.format("01", "01",  dates[-1][0],  dates[-1][1], "{0}")))
+    dates.append(('01', '01', -1))
+
+    return dates
+    # except Exception as e:
+    #     print(repr(e))
+    #     return []
 
 async def get_link_page_in_all_timelines(dates, main_url):
     
