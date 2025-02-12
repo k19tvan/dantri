@@ -24,7 +24,7 @@ headers = {
     'Accept-Language':'en-US,en;q=0.9',
 }
 
-MAX_CONCURRENT_REQUEST = 10
+MAX_CONCURRENT_REQUEST = 15
 semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUEST)
 
 USER_AGENTS = [
@@ -36,22 +36,10 @@ USER_AGENTS = [
 def get_categories(base_url):
     
     html = requests.get(base_url, headers=headers)
-    soup = BeautifulSoup(html.content, 'html.parser').find(class_ = "menu-wrap bg-wrap")
+    soup = BeautifulSoup(html.content, 'html.parser').find(class_ = "nf-wrap container dt-gap-[40px] dt-justify-between")
+    categories = [category["href"] for category in soup.find_all("a", class_="dt-text-MineShaft")]
+    return categories
     
-    list_categories = {}
-    
-    parent_categories = soup.find_all("li", class_="has-child")
-    for parent_category in parent_categories:
-        lst_category = []
-        child_categories = parent_category.find("ol", class_="submenu").find_all("li")
-        
-        for child_category in child_categories:
-            tag_a = child_category.find("a")
-            lst_category.append((tag_a.text, tag_a["href"]))
-            
-        list_categories[parent_category.find('a').text] = lst_category
-     
-    return list_categories
 
 async def fetch_url(client, url): 
     """ Return html of a url"""
@@ -82,6 +70,7 @@ def get_urls_from_url(url):
         ats = soup.find_all(class_='article-thumb')
         return [at.find('a', href=True)['href'] for at in ats]
     except: 
+        print("Error in get_urls_from_url")
         return []
 
 def get_urls_from_html(html):
@@ -90,6 +79,7 @@ def get_urls_from_html(html):
         ats = soup.find_all(class_='article-thumb')
         return [at.find('a', href=True)['href'] for at in ats]
     except:
+        print("Error in get_urls_from_html")
         return []
 
 def get_dates(url, main_url):
@@ -100,7 +90,6 @@ def get_dates(url, main_url):
         dates = []; ed = ("12", "31")
         
         while True: 
-            
             dates.append((ed[0], ed[1], 30))
             
             links = get_urls_from_url(url.format("01", "01", ed[0], ed[1]))
@@ -108,6 +97,13 @@ def get_dates(url, main_url):
             
             last_link = links[-1]
             soup = BeautifulSoup(requests.get(last_link, headers=headers).content, 'html.parser').find(class_='author-time')
+            
+            cnt = len(links) - 2
+            while soup == None:
+                soup = BeautifulSoup(requests.get(links[cnt], headers=headers).content, 'html.parser').find(class_='author-time')
+                cnt -= 1
+            
+            if soup == None: break
             fr = soup['datetime'].split()[0].split('-')
             
             ed = ((fr[1], fr[2]))
@@ -116,7 +112,9 @@ def get_dates(url, main_url):
         dates.append(('01', '01', -1))
 
         return dates 
-    except: 
+    
+    except Exception as e: 
+        print(f"Error: {e}")
         return []
 
 async def get_link_page_in_all_timelines(dates, main_url):
@@ -142,7 +140,7 @@ async def get_link_page_in_all_timelines(dates, main_url):
         return links
     
     except:
-        print("Have not processed this page type !")
+        print("Error in get_link_page_in_all_timelines")
         return []
 
 class PAGE:
@@ -184,32 +182,28 @@ async def process_url(client, url):
         container = soup.find(class_="singular-container")
         if container:
             title = container.find(class_='title-page detail')
-            content = container.get_text(separator='\n', strip=True).replace("\n", "\\n")
-            
-            metadataraws = []
-            for figure in soup.find_all("figure", class_="image align-center"):
-                for elem in figure.find_all(["img", "figcaption"]):
-                    if elem.name == "img":
-                        src = elem.get("data-src") or elem.get("data-original") or elem.get("src")
-                        if src and src.startswith("http"):
-                            metadataraws.append(src)
-                    elif elem.name == "figcaption":
-                        metadataraws.append(elem.get_text(strip=True))
-            
+            content = container.get_text(separator='\n', strip=True)
             
             metadata = []
-            cur = []
-            for metadataraw in metadataraws:
-                cur.append(metadataraw)
-                if not ("http" in metadataraw):
-                    metadata.append(cur)
-                    cur = [] 
+            for figure in soup.find_all("figure", class_="image"):
+                img_src = None
+                caption_text = None
+                img_elem = figure.find("img")
+                
+                if img_elem: img_src = img_elem.get("data-src") or img_elem.get("data-original") or img_elem.get("src")
+                caption_elem = figure.find("figcaption")
+                if caption_elem: caption_text = caption_elem.get_text(strip=True)
+                
+                if img_src and caption_text:
+                    metadata.append([img_src, caption_text])
+                else: metadata.append([img_src])
                 
             return PAGE(url, title.text, content, metadata)
     
     return PAGE("", "", "", "")
 
-async def process_urls(urls, batch_size = 10):
+
+async def process_urls(urls, batch_size = 15):
     results = []
     async with httpx.AsyncClient() as client:
         n = len(urls)
@@ -225,6 +219,25 @@ async def process_urls(urls, batch_size = 10):
         
     return results
 
+async def process_url_to_get_htmls(client, url):
+    html_response = await fetch_url_2(client, url)
+    return html_response
+    
+async def process_urls_to_get_htmls(urls, batch_size = 15):
+    results = []
+    async with httpx.AsyncClient() as client:
+        n = len(urls)
+    
+        for st in range(0, n, batch_size):
+            batch = urls[st: st + batch_size]
+            print(f"Processing Batch {st // batch_size + 1}/{(n + batch_size - 1) // batch_size}")    
+            tasks = [process_url_to_get_htmls(client, url) for url in batch]
+            batch_results = await asyncio.gather(*tasks)
+
+            results.extend(batch_results)
+            await asyncio.sleep(2)
+        
+    return results
 
 def file_counts(path):
     return sum(1 for file in path.iterdir())
