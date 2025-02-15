@@ -1,6 +1,9 @@
 import asyncio
 import json
 import os
+
+from async_timeout import timeout
+
 from utils import *
 from pathlib import Path
 import random
@@ -78,4 +81,160 @@ async def main():
                 with open(cur_saved_path/Path(str(i)+".html"), "w", encoding="utf-8") as f:
                     f.write(html)
 
-asyncio.run(main())
+
+import json
+import requests
+import os
+from langchain_mistralai import ChatMistralAI
+from langchain.schema import HumanMessage
+import time
+
+mistral_api_key = "your-api-key"
+
+
+# Define the JSON schema for structured output
+json_schema = {
+  "title": "ArticleExtractionSchema",
+  "description": "Schema for extracting structured data from newspaper articles",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "The URL of the article."
+    },
+    "title": {
+      "type": "string",
+      "description": "The title of the article."
+    },
+    "content": {
+      "type": "string",
+      "description": "The full text content of the article."
+    },
+    "metadata": {
+      "type": "array",
+      "description": "An array of image metadata.",
+      "items": {
+        "type": "array",
+        "items": [
+          {
+            "type": "string",
+            "description": "The URL of the image."
+          },
+          {
+            "type": "string",
+            "description": "The caption or description of the image."
+          }
+        ]
+      }
+    }
+  },
+  "required": ["url", "title", "content", "metadata"]
+}
+
+from pydantic import BaseModel, HttpUrl
+from typing import List
+import requests, json, time, asyncio
+from langchain_core.messages import HumanMessage
+from bs4 import BeautifulSoup
+
+class MetadataItem(BaseModel):
+  image_url: str  # The URL of the image.
+  description: str  # The caption or description of the image.
+
+class Article(BaseModel):
+  url: str  # The URL of the article.
+  title: str  # The title of the article.
+  content: str  # The full text content of the article.
+  metadata: List[MetadataItem]  # Image metadata list.
+
+# Mistral AI setup
+llm = ChatMistralAI(model="mistral-large-2402", api_key=mistral_api_key, timeout=300)
+structured_llm = llm.with_structured_output(Article, method='json_mode')
+
+
+def fetch_html(url):
+    """Fetch webpage HTML."""
+    response = requests.get(url)
+    return response.text if response.status_code == 200 else {"error": "Failed to fetch page"}
+
+
+def extract_main_content(html_content):
+    """Extract relevant content from HTML, prioritizing <main>."""
+    soup = BeautifulSoup(html_content, "html.parser")
+    main_element = soup.find("main") or soup.find("article")
+    return str(main_element) if main_element else html_content
+
+
+def extract_info_with_mistral(url, html_content):
+    """Send the HTML to Mistral AI and get structured data."""
+    prompt = f"""
+    Extract structured data from the following newspaper article HTML.
+
+    ### **Instructions**:
+    - Extract **title** from the article.
+    - Extract **content** (full text of the article).
+    - Extract **images** and their **captions**.
+    - If a caption is missing, return an empty string `""`.
+    - The output **must** be a valid JSON object following this structure.
+    - **Preserve all paragraphs in order**.
+
+    ---
+
+    ### **Example Output (Mimic this format)**
+    ```json
+    {{
+      "url": "https://example.com/article-123",
+      "title": "Breaking News: AI Revolutionizes Data Extraction",
+      "content": "Artificial Intelligence (AI) is transforming data processing...",
+      "metadata": [
+        {{
+          "image_url": "https://example.com/image1.jpg",
+          "description": "A group of researchers working on AI models."
+        }},
+        {{
+          "image_url": "https://example.com/image2.jpg",
+          "description": ""
+        }}
+      ]
+    }}
+    ```
+
+    ---
+
+    ### **Now extract structured data from the given article:**
+    **URL**: {url}  
+
+    **HTML Content**: {html_content}
+        """
+
+    response = structured_llm.invoke([HumanMessage(content=prompt)])
+    response_dict = response.model_dump()  # Convert to dictionary
+
+    # Fix schema mismatches
+    # response_dict["content"] = response_dict.pop("full_text_content", "")
+    # response_dict["metadata"] = [
+    #     {"image_url": img["url"], "description": img.get("caption", "")}
+    #     for img in response_dict.pop("images", [])
+    # ]
+    response_dict.setdefault("url", url)  # Ensure URL exists
+
+    return Article(**response_dict)  # Validate with Pydantic
+
+
+def scrape_and_extract(url):
+    """Fetch HTML, extract content, and parse structured data."""
+    html_content = fetch_html(url)
+    main_html = extract_main_content(html_content)
+    return extract_info_with_mistral(url, main_html)
+
+
+async def main2():
+    url = "https://dantri.com.vn/giao-duc/truong-quoc-te-bat-ngo-gui-thu-de-nghi-phu-huynh-phai-chuyen-truong-20250215154617281.htm"
+    start = time.time()
+    result = scrape_and_extract(url)
+    end = time.time()
+
+    print(json.dumps(result.model_dump(), indent=2, ensure_ascii=False))  # ✅ Vietnamese characters
+    print("It took", end - start, "seconds!")
+
+asyncio.run(main2())
