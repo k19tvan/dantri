@@ -1,0 +1,11 @@
+{
+    "url": "https://dantri.com.vn/cong-nghe/ma-doc-android-co-kha-nang-dieu-khien-smartphone-tu-xa-20220412111640315.htm",
+    "title": "Mã độc Android có khả năng điều khiển smartphone từ xa",
+    "content": "Mã độc Android có khả năng điều khiển smartphone từ xa\nThế Anh\nThứ tư, 13/04/2022 - 08:26\n(Dân trí) - Các chuyên gia bảo mật tại ThreatFabric vừa phát hiện một loại mã độc mới trên nền tảng Android có tên gọi là Octo. Mã độc này được phát triển từ ExoCompact, một biến thể dựa trên trojan Exo.\nĐáng chú ý, mã độc này cho phép tin tặc có thể điều khiển thiết bị từ xa, bao gồm khả năng chặn thông báo, tắt âm thanh, chặn hoặc gửi tin nhắn đến một số\nđiện thoại\ncụ thể, khóa màn hình chính và khởi chạy ứng dụng bất kỳ.Tin tặc có thể điều khiển thiết bị từ xa thông qua dịch vụ trợ năng và MediaProjection trên hệ điều hành Android. Mã độc sẽ che giấu các hoạt động bất chính bằng cách tạo ra một lớp phủ màn hình màu đen, đặt độ sáng về 0 và kích hoạt chế độ \"không làm phiền\" để tắt thông báo. Từ đó, kẻ gian có thể thực hiện mọi thao tác trên thiết bị mà người dùng không hề hay biết.\nLoại mã độc này cũng có thể vô hiệu hóa chức năng Google Protect trên kho ứng dụng CH Play. Điều đó khiến cho tin tặc có thể cài đặt mã độc này vào hàng loạt ứng dụng và phát tán chúng thông qua cửa hàng của Google.\nMột số ứng dụng có chứa mã độc Octo đã được phát hiện, bao gồm: Pocket Screencaster, Fast Cleaner 2021, Play Store, Postbank Security, Pocket Screencaster, BAWAG PSK Security, Play Store app install.\nTheo\nwww.tomsguide.com",
+    "metadata": [
+        [
+            "https://cdnphoto.dantri.com.vn/3RIzxEEYkvu8v_LSNj1A6w3IhBI=/thumb_w/1155/2022/04/12/ma-doc-1649736835974.jpg",
+            "Mã độc Octo cho phép tin tặc có thể điều khiển thiết bị từ xa (Ảnh: IBTimes)."
+        ]
+    ]
+}

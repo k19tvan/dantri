@@ -1,0 +1,11 @@
+{
+    "url": "https://dantri.com.vn/cong-nghe/airtag-co-the-bi-hack-de-dan-nguoi-dung-den-cac-trang-web-doc-hai-20210511120115498.htm",
+    "title": "AirTag có thể bị hack để dẫn người dùng đến các trang web độc hại",
+    "content": "AirTag có thể bị hack để dẫn người dùng đến các trang web độc hại\nT.Thủy\nThứ ba, 11/05/2021 - 13:01\n(Dân trí) - AirTag vừa được Apple ra mắt cách đây không lâu, nhưng loại phụ kiện này đã có thể bị can thiệp vì những mục đích xấu.Được giới thiệu vào cuối tháng 4/2021 và chỉ được bán ra thị trường từ ngày 30/4 vừa qua, AirTag là phụ kiện cho phép người dùng gắn lên các vật dụng dễ bị thất lạc như chìa khóa, ví tiền…\nKhi kích hoạt chế độ Lost Mode (chế độ thất lạc và tìm kiếm), AirTag sẽ phát ra tín hiệu gửi đến một trong số hàng tỷ thiết bị của Apple trên toàn cầu, sau đó gửi một thông báo về iPhone của người dùng để họ truy cập vào trang web định vị của Apple (tại địa chỉ found.apple.com) để người dùng biết được vị trí của AirTag.\nTuy nhiên, mới đây, nhà nghiên cứu bảo mật người Đức có tên Thomas Roth cho biết đã tìm được cách để can thiệp và hack vào AirTag của người dùng.\nTheo đó, Thomas Roth đã thiết lập lại bộ vi điều khiển trên AirTag, để từ đó thay vì gửi thông báo với đường link trang web định vị của Apple (địa chỉ found.apple.com), Roth có thể khiến AirTag gửi thông báo chứa đường link bất kỳ đến iPhone của người dùng, điều này có thể khiến người dùng mất cảnh giác và bị lừa truy cập vào các trang web giả mạo, lừa đảo mà không hay biết.\nTuy nhiên, để thực hiện được hình thức hack như Thomas Roth thể hiện là điều không dễ, vì tin tặc cần phải can thiệp trực tiếp vào AirTag mà người dùng không phát hiện ra. Nhưng đây là minh chứng cho thấy AirTag đã bị hack và có thể can thiệp, tương tự như hình thức \"bẻ khóa\" (jailbreak) trên iPhone, đồng nghĩa với việc một thiết bị nhỏ gọn như AirTag cũng tiềm ẩn nguy cơ về bảo mật, đòi hỏi Apple cần phải có những giải pháp để tăng cường bảo mật trên thiết bị của mình.\nChuyên gia bảo mật Thomas Roth minh họa cho khả năng can thiệp vào AirTag",
+    "metadata": [
+        [
+            "https://cdnphoto.dantri.com.vn/F-1hZKMUHaAMKSH0QlPHlgwer04=/thumb_w/960/2021/05/11/air-tag-1620709031212.jpg",
+            "AirTag là phụ kiện mới ra mắt của Apple, giúp người dùng xác định vị trí của các vật dụng dễ thất lạc như chìa khóa, ví tiền…"
+        ]
+    ]
+}

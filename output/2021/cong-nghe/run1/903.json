@@ -1,0 +1,27 @@
+{
+    "url": "https://dantri.com.vn/cong-nghe/cach-khoi-phuc-luot-dislike-cua-cac-video-tren-youtube-20211202154435847.htm",
+    "title": "Cách khôi phục lượt Dislike của các video trên Youtube",
+    "content": "Cách khôi phục lượt Dislike của các video trên Youtube\nQuang Huy\nThứ sáu, 03/12/2021 - 06:18\n(Dân trí) - Bài viết dưới đây sẽ giúp bạn hiển thị lại số lượt Dislike của các video trên Youtube, để phần nào đánh giá được chất lượng của các video.\nGiữa tháng 11 vừa qua, Youtube đã có một động thái gây tranh cãi khi quyết định\nẩn đi số lượt nhấn nút \"Dislike\"\n(Không thích) của các video trên trang web của hãng. Nút Dislike vẫn sẽ được giữ nguyên để người xem có thể đánh giá về video, nhưng tổng số lượt nhấn Dislike thì chỉ có chủ của đoạn video mới xem được, thay vì hiển thị công khai như trước đây.\nĐộng thái này của Youtube đã gây ra nhiều phẫn nộ trong cộng đồng mạng, khi nhiều người cho rằng đây là cách mà Youtube dung túng cho các video \"rác\"và nội dung kém chất lượng, khi số lượt dislike chính là một trong những cách thể hiện rõ nhất chất lượng nội dung của video trên Youtube. Dựa vào lượt dislike, nhiều người có thể bỏ qua ngay mà không phải mất thời gian để xem đoạn video đó.Mới đây, Dmitry Selivanov, một lập trình viên người Nga, đã xây dựng một công cụ để giúp người dùng có thể hiển thị lại số lượt dislike của các video khi xem Youtube.\nCông cụ có tên gọi \"Return Youtube Dislike\", đang được cung cấp dưới dạng extension (tiện ích mở rộng) dành cho 2 trình duyệt phổ biến nhất hiện nay là Firefox và Chrome. Extension này sẽ truy cập vào API của Youtube mà Google cung cấp cho các nhà phát triển để lấy dữ liệu về số lượt dislike của các video trên Youtube.\nMột điều cần lưu ý là số lượt dislike của các video khi sử dụng extension \"Return Youtube Dislike\" sẽ không được hiển thị theo thời gian thực, mà các dữ liệu này sẽ được cập nhật sau mỗi 2 đến 3 ngày. Dù vậy, điều này cũng là đủ để người dùng có thể đánh giá chất lượng của các video trên Youtube.\nChỉ sau một thời gian ngắn được ra mắt, đã có hơn 130.000 người cài đặt extension này, cho thấy rất nhiều người dùng Youtube mong muốn được hiển thị lại số lượt dislike của các video trên Youtube.\nHướng dẫn cài đặt \"Return Youtube Dislike\" để hiển thị số lượt dislike của các video trên Youtube\nNếu đang sử dụng trình duyệt web Firefox, bạn\ntruy cập vào đây,\nnhấn nút \"Add to Firefox\" để cài đặt extension \"Return Youtube Dislike\" vào trình duyệt.\nNhấn tiếp vào nút \"Add\" từ hộp thoại hiện ra để xác nhận.\nVới trình duyệt Chrome, bạn\ntruy cập tại đây,\nnhấn nút \"Thêm vào Chrome\" để cài đặt extension \"Return Youtube Dislike\" vào trình duyệt.\nNhấn vào nút \"Thêm tiện ích\" từ hộp thoại hiện ra để xác nhận.\nNhư vậy, bạn đã hoàn tất việc cài đặt extension \"Return Youtube Dislike\" trên trình duyệt Firefox hoặc Chrome. Bây giờ, bạn có thể truy cập vào Youtube và xem một video bất kỳ, số lượt nhấn dislike của video đó sẽ lại được hiển thị một cách đầy đủ.Hiện tại Extension này chỉ dành cho các trình duyệt web, do vậy bạn chỉ có thể khôi phục số lượt dislike khi xem Youtube trên trình duyệt web, còn với phiên bản ứng dụng của Youtube thì vẫn chưa có cách nào khôi phục được.",
+    "metadata": [
+        [
+            "https://cdnphoto.dantri.com.vn/xdcRa9NmwMvup8HIqeishyQ4N68=/thumb_w/990/2021/12/02/youtube-dislike-1-1638434490342.png",
+            "Số lượt nhấn Dislike của các video trên Youtube sẽ không còn được hiển thị."
+        ],
+        [
+            "https://cdnphoto.dantri.com.vn/rnnfBhm5y1giVStw5dDb-zIAh-0=/thumb_w/990/2021/12/02/youtube-dislike-2-1638434490232.png"
+        ],
+        [
+            "https://cdnphoto.dantri.com.vn/aJTp3nWk3ZVaWw2MM0vs2Q8080A=/thumb_w/990/2021/12/02/youtube-dislike-3-1638434490151.png"
+        ],
+        [
+            "https://cdnphoto.dantri.com.vn/8cUdLp0mqzvZunmdKT2KhtaNFFM=/thumb_w/990/2021/12/02/youtube-dislike-4-1638434490187.png"
+        ],
+        [
+            "https://cdnphoto.dantri.com.vn/6JW5iIvhoj7LEOyOUo-iKKNH1YE=/thumb_w/990/2021/12/02/youtube-dislike-5-1638434490145.png"
+        ],
+        [
+            "https://cdnphoto.dantri.com.vn/XitqTnmb7MSWAm4nUM3fEAor7u0=/thumb_w/990/2021/12/02/youtube-dislike-6-1638434490365.png",
+            "Số lượt dislike của video đã được khôi phục sau khi cài đặt extension \"Return Youtube Dislike\"."
+        ]
+    ]
+}

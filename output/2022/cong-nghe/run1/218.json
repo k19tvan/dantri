@@ -1,0 +1,11 @@
+{
+    "url": "https://dantri.com.vn/cong-nghe/canh-giac-ma-doc-danh-cap-toan-bo-du-lieu-chi-qua-mot-cu-click-chuot-20220330144911793.htm",
+    "title": "Cảnh giác mã độc đánh cắp toàn bộ dữ liệu chỉ qua một cú click chuột",
+    "content": "Cảnh giác mã độc đánh cắp toàn bộ dữ liệu chỉ qua một cú click chuột\nThế Anh\nThứ tư, 30/03/2022 - 15:35\n(Dân trí) - Diana Lopera - nhà nghiên cứu bảo mật tại Trustwave, vừa đưa ra cảnh báo về một chiến dịch tấn công nguy hiểm bằng email.\nTheo Lopera, tin tặc sẽ đính kèm các tệp tin độc hại vào email, dụ người dùng ấn vào chúng, từ đó phát tán mã độc Vidar và đánh cắp dữ liệu. Những email giả mạo này thường có nội dung ngắn gọn, nhằm hướng sự chú ý của người đọc đến tệp đính kèm. Tệp đính kèm có tên là \"request.doc\". Tuy nhiên, đây lại là một tệp ISO.ISO là định dạng hình ảnh đĩa CD, thường được tin tặc sử dụng để lưu trữ các phần mềm độc hại. Nhìn qua, đây chỉ là một tệp tin tài liệu văn bản thông thường. Tuy nhiên, nó bao gồm một tệp Microsoft Compiled HTML Help (CHM) có tên \"pss10r.chm\", tệp còn lại là \"app.exe\".\nNếu người dùng truy cập vào tệp tin trên, những kẻ tấn công có thể giành quyền truy cập thiết bị và đánh cắp dữ liệu của nạn nhân.\nMã độc Vidar có thể thu thập thông tin và dữ liệu hệ thống từ một loạt các trình duyệt cũng như ứng dụng. Khi được kích hoạt, Vidar sẽ tự động kết nối với máy chủ điều khiển từ xa. Sau đó, mã độc sẽ đánh cắp toàn bộ dữ liệu của người dùng.\nChính vì thế, hãy cảnh giác với những email có chứa tệp tin không xác định, tránh việc trở thành nạn nhân của chiêu trò lừa đảo này.\nTheo\nbgr.com",
+    "metadata": [
+        [
+            "https://cdnphoto.dantri.com.vn/iNO5uiIPhtOnAk92z0eJlRcB1oA=/thumb_w/1155/2022/03/30/hack-email-1648626206232.jpg",
+            "Mã độc Vidar có thể đánh cắp toàn bộ dữ liệu máy tính khi người dùng truy cập vào nó (Ảnh: TheSun)."
+        ]
+    ]
+}

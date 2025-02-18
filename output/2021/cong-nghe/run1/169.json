@@ -1,0 +1,14 @@
+{
+    "url": "https://dantri.com.vn/cong-nghe/nhieu-nguoi-dung-macbook-m1-gap-loi-o-cung-ssd-20210225105520953.htm",
+    "title": "Nhiều người dùng MacBook M1 gặp lỗi ổ cứng SSD",
+    "content": "Nhiều người dùng MacBook M1 gặp lỗi ổ cứng SSD\nNguyễn Nguyễn\nThứ năm, 25/02/2021 - 14:46\n(Dân trí) - Lỗi khấu hao lượt đọc/ghi của ổ cứng SSD được phát hiện trên một số mẫu máy MacBook chạy chip M1 có thể khiến thiết bị nhanh giảm tuổi thọ theo thời gian.\nMới đây, một số người dùng MacBook đã phản ánh về \"lỗi lạ\" xuất hiện trên các dòng MacBook Air và MacBook Pro sử dụng M1 - chipset kiến trúc ARM mới nhất của Apple.\nTheo đó, các trường hợp ghi nhận ổ cứng SSD có số số lượt đọc và ghi dữ liệu quá cao chỉ sau một thời gian ngắn sử dụng. Cá biệt có trường hợp ghi nhận chỉ số TBW cho phép lên tới 10 - 13%, dù MacBook M1 chỉ mới ra mắt chưa đầy nửa năm.\nNgười dùng Hector Martin viết trên Twitter, cho rằng chỉ số này tương đương với việc sử dụng 30% mức khấu hao đọc ghi trên một model MacBook 256GB. Nếu thông tin này là chính xác, một số mẫu máy có thể sẽ chạm tới mức giới hạn 100% chỉ trong chưa đầy nửa năm, theo Hector. Tuy nhiên, đây chỉ là một trường hợp cá biệt.\nTheo\n9to5Mac\n, một ổ SSD ở thời điểm hiện tại có thể duy trì được khoảng 10 năm trước khi bị \"lão hóa\". Nhưng với SSD của MacBook M1, con số này có thể sẽ chỉ còn hơn 2 năm nếu mọi thứ không được giải quyết.TBW (Tera Byte Written) là tổng Tera Byte được ghi trên thiết bị ổ cứng SSD với 1TB = 1.024GB). Thông số này dùng để thể hiện độ bền của ổ cứng và thay thế cho số vòng quay trên ổ cứng cơ HDD và được tính bằng số lượng TBW nhất định.\nCó thể hiểu đơn giản rằng với một chiếc ổ cứng SSD thông thường, nếu nó có chỉ số TBW khá lớn, tức là nó đã được sử dụng trong một thời gian rất lâu. Tuy nhiên trong một số trường hợp, các lỗi phát sinh có thể khiến SSD bị giảm tuổi thọ nhanh hơn, dẫn đến tình trạng chậm, lag có thể xảy ra, thậm chí là hỏng dữ liệu bên trong.\nVới MacBook M1, mọi chuyện còn tệ hơn khi SSD còn được gắn chết trên bo mạch (không thể tự tháo rời), khiến việc thay thế khi gặp sự cố cũng gần như là không thể.\nTheo một số nguồn tin thân cận với Apple, nguyên nhân của lỗi này vẫn chưa được làm sáng tỏ, nhưng có thể đến từ cách con chip M1 tận dụng bộ nhớ trong của MacBook trong một số trường hợp cụ thể nhằm tăng hiệu năng.",
+    "metadata": [
+        [
+            "https://cdnphoto.dantri.com.vn/UutMwe3rYwAlPe-y7019BG4lXtI=/thumb_w/960/2021/02/25/macbook-1614224642051.jpg"
+        ],
+        [
+            "https://cdnphoto.dantri.com.vn/45r7lhnOfxcZIRjq17w0Pv22DHA=/thumb_w/960/2021/02/25/m-1-1614224609224.jpeg",
+            "SSD trên MacBook M1 từng được đánh giá là có tốc độ đọc và ghi rất ấn tượng, và cao hơn so với các mẫu MacBook sử dụng chip Intel trước đây."
+        ]
+    ]
+}

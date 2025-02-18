@@ -1,0 +1,15 @@
+{
+    "url": "https://dantri.com.vn/cong-nghe/cong-nghe-moi-cua-google-se-cach-mang-hoa-nhiep-anh-ky-thuat-so-20220829162158270.htm",
+    "title": "Công nghệ mới của Google sẽ cách mạng hóa nhiếp ảnh kỹ thuật số",
+    "content": "Công nghệ mới của Google sẽ cách mạng hóa nhiếp ảnh kỹ thuật số\nNam Đoàn\nThứ hai, 29/08/2022 - 16:22\n(Dân trí) - Trí tuệ nhân tạo (AI) có tên là RawNeRF do Google Research phát triển có thể giúp người dùng chụp ảnh vào ban đêm mà không bị giảm chất lượng hình ảnh.Theo đó, nhóm nghiên cứu từ Google Research, một bộ phận của công ty Mountain View đã phát triển một công nghệ AI giúp giảm nhiễu kỹ thuật số trong những bức ảnh với một kết quả ấn tượng.\nCông nghệ có tên là RawNeRF - một phần của dự án MultiNeRF sẽ cho phép người dùng có thể chụp ảnh trong điều kiện ánh sáng yếu mà vẫn giữ được chất lượng hình ảnh.\nTrước đó, công nghệ NeRF của Google hoạt động bằng cách quét các yếu tố hiện diện trong một cảnh sau đó tái tạo lại hình ảnh 3D trung thực, song chúng có một nhược điểm chính là chỉ có thể hoạt động tốt nhất với những bức ảnh đủ ánh sáng, không nhiễu, đặc biệt là công nghệ này không thể quét và khắc phục các chi tiết bị ẩn trong bóng tối của bức ảnh.\nChính vì thế, các kỹ sư Google đã phát triển công cụ RawNeRF, dựa trên trí tuệ nhân tạo giúp giảm nhiễu hiệu quả và cho ra một bức ảnh sắc nét trong điều kiện thiếu sáng.Điều này, giúp các nhiếp ảnh gia có thể chụp những bức ảnh ban đêm mà vẫn giữ nguyên được những chi tiết đẹp nhất.\nBen Mildenhall, một trong những nhà nghiên cứu của Google Research và là thành viên trong dự án đã chia sẻ một video cho thấy một số chi tiết bị ẩn trong bóng tối của bức ảnh trở nên sắc nét so với những bức ảnh chụp mà không có sự hỗ trợ của RawNeRF.\nÔng giải thích: \"Công cụ AI này có khả năng kết hợp các hình ảnh được chụp từ nhiều góc khác nhau của máy ảnh để loại bỏ nhiễu, sau đó tái tạo lại một hình ảnh chân thực, sắc nét trong mọi điều kiện môi trường\".\nHiện tại, RawNeRF vẫn đang trong giai đoạn nghiên cứu và chưa được Google đưa ra thị trường.\nVào năm 2020, Microsoft đã trình làng một công cụ có khả năng khôi phục các bức ảnh cũ đã bị hư hỏng, sử dụng trí tuệ nhân tạo DALL-E 2 để tại ra hình ảnh chân thực như ban đầu.\nCó thể thấy công nghệ AI đang ngày càng cách mạng hóa thế giới nhiếp ảnh cho ra những bức ảnh chất lượng cao và sắc nét.\nTheo\nsiecledigital.fr",
+    "metadata": [
+        [
+            "https://cdnphoto.dantri.com.vn/h6owKCF3YVNaXli04sAqN-wDXFY=/thumb_w/1020/2022/08/29/khoa-hocdocx-1661764643532.png",
+            "Công cụ do Google phát triển giúp cải thiện chất lượng hình ảnh vào ban đêm, giảm nhiễu kỹ thuật số và làm sắc nét những chi tiết bị ẩn trong bóng tối (Ảnh: Carla Limatola)."
+        ],
+        [
+            "https://cdnphoto.dantri.com.vn/myLEzr1IuUd6tBhCgHRbv3bGspg=/thumb_w/1020/2022/08/29/khoa-hocdocx-1661764643818.png",
+            "Hình ảnh chụp cùng một khung cảnh vào ban đêm, ảnh phải với sự hỗ trợ của công nghệ AI RawNeRF cho thấy bức ảnh sắc nét so với bức ảnh chụp thường (Ảnh chụp màn hình)."
+        ]
+    ]
+}
