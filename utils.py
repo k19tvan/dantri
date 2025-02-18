@@ -179,7 +179,7 @@ async def process_url(client, url):
     html_response = await fetch_url_2(client, url)
     if html_response:
         soup = BeautifulSoup(html_response, "html.parser")
-        container = soup.find(class_="singular-container")
+        container = soup.find('main')
         if container:
             title = container.find(class_='title-page detail')
             content = container.get_text(separator='\n', strip=True)

@@ -89,7 +89,7 @@ from langchain_mistralai import ChatMistralAI
 from langchain.schema import HumanMessage
 import time
 
-mistral_api_key = "your-api-key"
+mistral_api_key = "Q5FexKRGA3tZ1XVuAWg2YuP0Xg5zQ0wQ"
 
 
 # Define the JSON schema for structured output
@@ -148,7 +148,7 @@ class Article(BaseModel):
   metadata: List[MetadataItem]  # Image metadata list.
 
 # Mistral AI setup
-llm = ChatMistralAI(model="mistral-large-2402", api_key=mistral_api_key, timeout=300)
+llm = ChatMistralAI(model="ministral-8b-2410", api_key=mistral_api_key, temperature=0.2, timeout=300)
 structured_llm = llm.with_structured_output(Article, method='json_mode')
 
 
@@ -172,11 +172,11 @@ def extract_info_with_mistral(url, html_content):
 
     ### **Instructions**:
     - Extract **title** from the article.
-    - Extract **content** (full text of the article).
+    - Extract **content** (full text of the article) by getting all text inside `<p>` tags`, preserving order.
+    - **Do NOT summarize, remove, or modify sentences**.
     - Extract **images** and their **captions**.
     - If a caption is missing, return an empty string `""`.
     - The output **must** be a valid JSON object following this structure.
-    - **Preserve all paragraphs in order**.
 
     ---
 
@@ -225,7 +225,14 @@ def scrape_and_extract(url):
     """Fetch HTML, extract content, and parse structured data."""
     html_content = fetch_html(url)
     main_html = extract_main_content(html_content)
-    return extract_info_with_mistral(url, main_html)
+    obj = extract_info_with_mistral(url, main_html)
+    figures = []
+    for figure in obj.metadata:
+        figures.append([figure.image_url, figure.description])
+    obj_dict = extract_info_with_mistral(url, main_html).model_dump()
+    obj_dict['metadata'] = figures
+
+    return obj_dict
 
 
 async def main2():
@@ -234,7 +241,7 @@ async def main2():
     result = scrape_and_extract(url)
     end = time.time()
 
-    print(json.dumps(result.model_dump(), indent=2, ensure_ascii=False))  # ✅ Vietnamese characters
+    print(json.dumps(result, indent=2, ensure_ascii=False))  # ✅ Vietnamese characters
     print("It took", end - start, "seconds!")
 
 asyncio.run(main2())
