@@ -33,12 +33,26 @@ USER_AGENTS = [
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
 ]
 
+
 def get_categories(base_url):
-    
     html = requests.get(base_url, headers=headers)
-    soup = BeautifulSoup(html.content, 'html.parser').find(class_ = "nf-wrap container dt-gap-[40px] dt-justify-between")
-    categories = [category["href"] for category in soup.find_all("a", class_="dt-text-MineShaft")]
-    return categories
+    soup = BeautifulSoup(html.content, 'html.parser').find(class_="nav-full bg-wrap")
+
+    list_categories = {}
+
+    parent_categories_names = soup.find_all("a", class_="dt-text-MineShaft")
+    parent_categories = [category.parent for category in parent_categories_names]
+    for parent_category in parent_categories:
+        lst_category = []
+        child_categories = parent_category.find("ol", class_="nf-submenu").find_all("li")
+
+        for child_category in child_categories:
+            tag_a = child_category.find("a")
+            lst_category.append((tag_a.text, tag_a["href"]))
+
+        list_categories[parent_category.find('a')['href'].split('/')[-1].replace('.htm', '')] = lst_category
+
+    return list_categories
     
 
 async def fetch_url(client, url): 
@@ -197,6 +211,9 @@ async def process_url(client, url):
                 if img_src and caption_text:
                     metadata.append([img_src, caption_text])
                 else: metadata.append([img_src])
+
+                if caption_text:
+                    content = content.replace(f'\n{caption_text}\n', '')
                 
             return PAGE(url, title.text, content, metadata)
     
